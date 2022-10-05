@@ -25,8 +25,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="ProvidedTypes.fsi"/>
-    <Compile Include="ProvidedTypes.fs"/>
+    <Compile Include="ProvidedTypes.fsi" />
+    <Compile Include="ProvidedTypes.fs" />
     <Compile Include="../SqlClient/Extensions.fs" />
     <Compile Include="../SqlClient/Shared.fs" />
     <Compile Include="../SqlClient/Configuration.fs" />
@@ -43,8 +43,6 @@
     <Compile Include="SingleRootTypeProvider.fs" />
     <Compile Include="SqlClientProvider.fs" />
     <Compile Include="SqlCommandProvider.fs" />
-    <Compile Include="SqlEnumProvider.fs" />
-    <Compile Include="SqlFileProvider.fs" />
     <None Include="Scripts\Scratchpad.fsx" />
     <None Include="Scripts\ReverseLineOrderForNotex.fsx" />
     <None Include="Scripts\XE.fsx" />
