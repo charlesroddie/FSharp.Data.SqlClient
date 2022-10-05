@@ -63,7 +63,6 @@
     <Compile Include="SqlCommandProvider.fs" />
     <Compile Include="SqlEnumProvider.fs" />
     <Compile Include="SqlFileProvider.fs" />
-    <Content Include="paket.references" />
     <None Include="Scripts\Scratchpad.fsx" />
     <None Include="Scripts\ReverseLineOrderForNotex.fsx" />
     <None Include="Scripts\XE.fsx" />
