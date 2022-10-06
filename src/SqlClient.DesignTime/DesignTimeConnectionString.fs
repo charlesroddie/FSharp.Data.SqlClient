@@ -11,7 +11,7 @@ type internal DesignTimeConnectionString =
     | Literal of string
     | NameInConfig of name: string * value: string * provider: string
 
-    static member Parse(s: string, resolutionFolder, fileName) =
+    static member Parse(s: string, resolutionFolder: string, fileName: string) =
         match s.Trim().Split([|'='|], 2, StringSplitOptions.RemoveEmptyEntries) with
             | [| "" |] -> invalidArg "ConnectionStringOrName" "Value is empty!"
             | [| prefix; tail |] when prefix.Trim().ToLower() = "name" -> 
@@ -21,7 +21,7 @@ type internal DesignTimeConnectionString =
             | _ -> 
                 Literal s
 
-    static member ReadFromConfig(name, resolutionFolder, fileName) = 
+    static member ReadFromConfig(name: string, resolutionFolder: string, fileName: string) = 
         let configFilename = 
             if fileName <> "" then
                 let path = Path.Combine(resolutionFolder, fileName)
@@ -55,7 +55,7 @@ type internal DesignTimeConnectionString =
         | Literal value -> value
         | NameInConfig(_, value, _) -> value
 
-    member this.RunTimeValueExpr isHostedExecution = 
+    member this.RunTimeValueExpr(isHostedExecution: bool) = 
         match this with
         | Literal value -> <@@ value @@>
         | NameInConfig(name, value, _) -> 

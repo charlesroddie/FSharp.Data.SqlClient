@@ -21,10 +21,10 @@ type internal TypeInfoPerConnectionStringCache() =
       dataTypeMappings.Clear()
     )
   
-  member x.ContainsConnectionString connectionString = 
+  member x.ContainsConnectionString(connectionString: string) = 
     lock (fun () -> dataTypeMappings.ContainsKey connectionString)
 
-  member x.RegisterTypes(connectionString, types) =
+  member x.RegisterTypes(connectionString: string, types: TypeInfo[]) =
     lock (fun () -> 
       if dataTypeMappings.ContainsKey connectionString then
           #if DEBUG
@@ -39,7 +39,7 @@ type internal TypeInfoPerConnectionStringCache() =
         dataTypeMappings.Add(connectionString, types)
     )
 
-  member x.GetTypesForConnectionString connectionString =
+  member x.GetTypesForConnectionString(connectionString: string) =
     lock (fun () ->
       match dataTypeMappings.TryGetValue connectionString with
       | true, types -> types
@@ -47,7 +47,7 @@ type internal TypeInfoPerConnectionStringCache() =
         raise (new InvalidOperationException(sprintf "types for connection %s were not retrieved!" connectionString))
     )
 
-  member x.DoIfConnectionStringNotRegistered connectionString ifAlreadyDone f = 
+  member x.DoIfConnectionStringNotRegistered (connectionString: string) (ifAlreadyDone: unit -> 'a) (f: unit -> 'a) = 
     lock (fun () ->
       if x.ContainsConnectionString connectionString then
           ifAlreadyDone ()
@@ -56,7 +56,7 @@ type internal TypeInfoPerConnectionStringCache() =
     )
     
 let internal sqlDataTypesCache = new TypeInfoPerConnectionStringCache()  
-let internal findTypeInfoBySqlEngineTypeId (connStr, system_type_id, user_type_id : int option) = 
+let internal findTypeInfoBySqlEngineTypeId (connStr: string, system_type_id: int, user_type_id : int option) = 
     assert (sqlDataTypesCache.ContainsConnectionString connStr)
 
     sqlDataTypesCache.GetTypesForConnectionString connStr

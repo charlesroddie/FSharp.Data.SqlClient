@@ -27,7 +27,7 @@ open System.Linq
 
 module Seq = 
 
-    let internal toOption source =  
+    let internal toOption(source: seq<'a>) =  
         match source |> Seq.truncate 2 |> Seq.toArray with
         | [||] -> None
         | [| x |] -> Some x
@@ -52,7 +52,7 @@ type DesignTimeConfig = {
 type internal Connection = Choice<string, SqlConnection, SqlTransaction>
 
 [<CompilerMessageAttribute("This API supports the FSharp.Data.SqlClient infrastructure and is not intended to be used directly from your code.", 101, IsHidden = true)>]
-type ``ISqlCommand Implementation``(cfg: DesignTimeConfig, connection: Connection, commandTimeout) = 
+type ``ISqlCommand Implementation``(cfg: DesignTimeConfig, connection: Connection, commandTimeout: int) = 
     let cmd = new SqlCommand(cfg.SqlStatement, CommandTimeout = commandTimeout)
     let manageConnection = 
         match connection with
